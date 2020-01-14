@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "WinApp.h"
-#include <cstring>
 LRESULT WinApp::SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	WinApp* lpWinApp = nullptr;
@@ -130,6 +130,12 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		EndPaint(hwnd, &painter);
 		return 0;
 	}
+
+
+
+
+
+
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
