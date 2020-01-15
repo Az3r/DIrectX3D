@@ -21,22 +21,6 @@ public:
 	inline void SetReleased() noexcept { mStates = std::bitset<3>("001"); }
 };
 
-class KeyEventArgs
-{
-private:
-	KeyState mState;
-	unsigned char mKeyCode;
-
-public:
-	KeyEventArgs(KeyState state, unsigned char key) noexcept : mState(state), mKeyCode(key) {}
-	KeyEventArgs() noexcept : mState(), mKeyCode(0u) {}
-
-	inline const KeyState& GetState() const noexcept { return mState; }
-	inline unsigned char GetKeyCode() const noexcept { return mKeyCode; }
-};
-
-
-
 class Keyboard
 {
 private:
