@@ -102,7 +102,7 @@ int WinApp::Run()
 
 	BOOL result;
 
-	while (result = GetMessage(&msg, mHWND, NULL, NULL))
+	while (result = GetMessage(&msg, NULL, NULL, NULL))
 	{
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);
