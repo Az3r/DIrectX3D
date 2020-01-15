@@ -18,8 +18,12 @@ private:
 private:
 	static LRESULT CALLBACK SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	ATOM RegisterWndClassEx();
+
 protected:
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	int InitInstance();
+	int Run();
+	int ExitInstance();
 
 public:
 	WinApp() : mHWND(NULL), mWC(),
@@ -48,9 +52,7 @@ public:
 	inline void SetPosition(int x, int y) { Move(mWidth, mHeight, x, y); }
 	inline void SetSize(int width, int height) { Move(width, height, mLeft, mTop); }
 
-	int InitInstance();
-	int Run();
-	int ExitInstance();
+	int Start();
 
 };
 

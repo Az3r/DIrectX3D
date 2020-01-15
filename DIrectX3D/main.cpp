@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "WinApp.h"
+#include "Game.h"
 
 HINSTANCE g_hInstance;
 int g_nCmdShow;
