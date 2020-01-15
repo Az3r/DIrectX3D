@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "WinApp.h"
 #include "Exception.h"
-
+#include <vector>
 LRESULT WinApp::SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	WinApp* lpWinApp = nullptr;
@@ -108,6 +108,13 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 		EndPaint(hwnd, &painter);
 		return 0;
+	}
+	case WM_KEYDOWN:
+	{
+		static std::string chars;
+		unsigned char key = static_cast<unsigned char>(wParam);
+		chars.push_back(key);
+		SetWindowTextA(m_hwnd, chars.c_str());
 	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);

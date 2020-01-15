@@ -31,53 +31,20 @@ private:
 	std::queue<KeyEventArgs> mEventBuffer;
 
 public:
+	Keyboard() : mKeys(256) {}
+
 	// clear preivous state and start reading events in the event buffer
 	int ReadKeys() noexcept;
 
 	// clear events in buffer
 	void ClearBuffer() noexcept;
 
+	// clear keyboard state
+	void Reset() const noexcept;
+
 	// add new event into buffer
 	void OnKeyEvent(KeyEventArgs args);
 	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	const KeyEventTypes& GetKeyState(unsigned char key) const;
 };
 
