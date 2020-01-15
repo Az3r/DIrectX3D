@@ -9,9 +9,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     g_hInstance = hInstance;
     g_nCmdShow = nCmdShow;
 
-    WinApp theApp;
-    theApp.InitInstance();
-    theApp.Run();
-    theApp.ExitInstance();
+    Game game;
+    game.Start();
+
     return 0;
 }
