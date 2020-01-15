@@ -111,11 +111,7 @@ int WinApp::Run()
 		if (mMouse.IsLeftMouseDown()) this->SetTitle(this->GetTitle() + L'a');
 	}
 
-	if (result < 0)
-	{
-		// window has been closed and destroyed
-		return 0;
-	}
+	if (result < 0) return -1;
 	else return msg.wParam;
 }
 
