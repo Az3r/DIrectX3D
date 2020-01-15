@@ -41,23 +41,19 @@ class Keyboard
 {
 private:
 	std::vector<KeyState> mKeys;
-	std::queue<KeyEventArgs> mEventBuffer;
-
 public:
 	Keyboard() : mKeys(256) {}
-
-	// pop and read the first event in queue
-	void Read() noexcept;
-
-	// clear events in buffer
-	void ClearBuffer() noexcept;
 
 	// clear keyboard state
 	void Reset() noexcept;
 
 	// add new event into buffer
 	void OnKeyEvent(KeyEventArgs args);
-	
+	void OnKeyDown(unsigned char key);
+	void OnKeyPressed(unsigned char key);
+	void OnKeyReleased(unsigned char key);
+
+
 	const KeyState& GetState(unsigned char key) const;
 	KeyState& GetState(unsigned char key);
 	inline bool IsKeyDown(unsigned char key) const { return this->GetState(key).IsDown(); }

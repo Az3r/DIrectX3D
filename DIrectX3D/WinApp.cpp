@@ -88,6 +88,7 @@ int WinApp::Run()
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);
 
+
 		mKeyboard.Read();
 		if (mKeyboard.IsKeyPressed(VK_MENU)) MessageBox(NULL, L"A is released", NULL, NULL);
 
@@ -129,28 +130,30 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	{
 		unsigned char key = static_cast<unsigned char>(wParam);
-		KeyState state(std::bitset<3>("100"));
+
 		// check whether this key is previously down or up
 		bool prevDown = lParam & 0x40000000;
-		if (!prevDown) state.SetDownAndPressed();
-		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
+		if (prevDown) mKeyboard.OnKeyDown(key);
+		else mKeyboard.OnKeyPressed(key);
+
 		return 0;
 	}
 	case WM_SYSKEYDOWN:
 	{
 		unsigned char key = static_cast<unsigned char>(wParam);
-		KeyState state(std::bitset<3>("100"));
+
 		// check whether this key is previously down or up
 		bool prevDown = lParam & 0x40000000;
-		if (!prevDown) state.SetDownAndPressed();
-		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
+		if (prevDown) mKeyboard.OnKeyDown(key);
+		else mKeyboard.OnKeyPressed(key);
+
 		return 0;
 	}
 	case WM_KEYUP:
-		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
+		mKeyboard.OnKeyReleased(static_cast<unsigned char>(wParam));
 		return 0;
 	case WM_SYSKEYUP:
-		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
+		mKeyboard.OnKeyReleased(static_cast<unsigned char>(wParam));
 		return 0;
 	case WM_KILLFOCUS:
 		mKeyboard.Reset();

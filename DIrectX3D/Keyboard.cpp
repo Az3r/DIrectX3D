@@ -1,17 +1,6 @@
 #include "pch.h"
 #include "Keyboard.h"
 
-
-void Keyboard::Read() noexcept
-{
-    if (mEventBuffer.empty()) return;
-
-    unsigned char key = mEventBuffer.front().GetKeyCode();
-    const KeyState& state = mEventBuffer.front().GetState();
-    this->GetState(key) = state;
-    mEventBuffer.pop();
-}
-
 inline void Keyboard::ClearBuffer() noexcept
 {
     mEventBuffer = std::queue<KeyEventArgs>();
@@ -28,6 +17,21 @@ void Keyboard::Reset() noexcept
 void Keyboard::OnKeyEvent(KeyEventArgs args)
 {
     mEventBuffer.push(args);
+}
+
+void Keyboard::OnKeyDown(unsigned char key)
+{
+    this->GetState(key) = std::bitset<3>("100");
+}
+
+void Keyboard::OnKeyPressed(unsigned char key)
+{
+    this->GetState(key) = std::bitset<3>("110");
+}
+
+void Keyboard::OnKeyReleased(unsigned char key)
+{
+    this->GetState(key) = std::bitset<3>("001");
 }
 
 const KeyState& Keyboard::GetState(unsigned char key) const
