@@ -133,7 +133,7 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		bool prevDown = lParam & 0x40000000;
 		if (!prevDown) state.SetDownAndPressed();
 		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
-		return 1;
+		return 0;
 	}
 	case WM_SYSKEYDOWN:
 	{
@@ -143,17 +143,17 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		bool prevDown = lParam & 0x40000000;
 		if (!prevDown) state.SetDownAndPressed();
 		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
-		return 1;
+		return 0;
 	}
 	case WM_KEYUP:
 		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
-		return 1;
+		return 0;
 	case WM_SYSKEYUP:
 		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
-		return 1;
+		return 0;
 	case WM_KILLFOCUS:
 		mKeyboard.Reset();
-		return 1;
+		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
