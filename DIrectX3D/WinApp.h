@@ -1,7 +1,9 @@
 #pragma once
 #include "Keyboard.h"
+#include "Mouse.h"
 #include <Windows.h>
 #include <string>
+
 class WinApp
 {
 private:
@@ -12,6 +14,7 @@ private:
 	static std::wstring sClassName;
 
 	Keyboard mKeyboard;
+	Mouse mMouse;
 private:
 	static LRESULT CALLBACK SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	ATOM RegisterWndClassEx();

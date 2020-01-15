@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "WinApp.h"
+#include <windowsx.h>
 
 std::wstring WinApp::sClassName = L"WndClass";
 
@@ -154,6 +155,35 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KILLFOCUS:
 		mKeyboard.Reset();
 		return 0;
+	case WM_LBUTTONUP:
+		mMouse.OnMouseReleased(VK_LBUTTON);
+		return 0;
+	case WM_RBUTTONUP:
+		mMouse.OnMouseReleased(VK_RBUTTON);
+		return 0;
+	case WM_MBUTTONUP:
+		mMouse.OnMouseReleased(VK_MBUTTON);
+		return 0;
+	case WM_XBUTTONUP:
+	{
+		WORD button = GET_XBUTTON_WPARAM(wParam);
+		if (button == XBUTTON1) mMouse.OnMouseReleased(VK_XBUTTON1);
+		else mMouse.OnMouseReleased(VK_XBUTTON2);
+		return TRUE;
+	}
+	case WM_LBUTTONDOWN:
+	{
+		static std::wstring chars;
+
+		POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+		if (DragDetect(mHWND, pt))
+		{
+			chars.push_back('a');
+			this->SetTitle(chars);
+		}
+	}
+
+
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
