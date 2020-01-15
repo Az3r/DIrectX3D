@@ -13,20 +13,23 @@ private:
 	int mWidth, mHeight, mLeft, mTop;
 	static std::wstring sClassName;
 
+protected:
 	Keyboard mKeyboard;
 	Mouse mMouse;
+
+
 private:
 	static LRESULT CALLBACK SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	ATOM RegisterWndClassEx();
 
 protected:
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	int InitInstance();
-	int Run();
-	int ExitInstance();
+	virtual int InitInstance();
+	virtual int Run();
+	virtual int ExitInstance();
 
 public:
-	WinApp() : mHWND(NULL), mWC(),
+	WinApp() noexcept : mHWND(NULL), mWC(),
 		mTitle(L"Desktop Application"),
 		mWidth(CW_USEDEFAULT), mHeight(CW_USEDEFAULT), mLeft(CW_USEDEFAULT), mTop(CW_USEDEFAULT)
 
@@ -51,8 +54,9 @@ public:
 	void Move(int width, int height, int x, int y);
 	inline void SetPosition(int x, int y) { Move(mWidth, mHeight, x, y); }
 	inline void SetSize(int width, int height) { Move(width, height, mLeft, mTop); }
+	inline const HWND& GetHWND() const noexcept { return mHWND; }
 
-	int Start();
+	virtual int Start();
 
 };
 
