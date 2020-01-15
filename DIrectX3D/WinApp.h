@@ -23,7 +23,7 @@ private:
 	ATOM RegisterWndClassEx();
 
 protected:
-	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	virtual int InitInstance();
 	virtual int Run();
 	virtual int ExitInstance();
