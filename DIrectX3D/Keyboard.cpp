@@ -24,11 +24,11 @@ inline void Keyboard::ClearBuffer() noexcept
     while (!mEventBuffer.empty()) mEventBuffer.pop();
 }
 
-void Keyboard::Reset() const noexcept
+void Keyboard::Reset() noexcept
 {
     for (size_t i = 0; i < mKeys.size(); i++)
     {
-        mKeys.at(i) == KeyEventTypes::None;
+        mKeys.at(i) = KeyEventTypes::None;
     }
 }
 

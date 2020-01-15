@@ -2,7 +2,7 @@
 #include <vector>
 #include <queue>
 
-enum class KeyEventTypes { Press, Down, Released, None };
+enum class KeyEventTypes { Pressed, Down, Released, None };
 
 class KeyEventArgs
 {
@@ -18,7 +18,7 @@ public:
 	inline KeyEventTypes GetType() const noexcept { return mType; }
 	inline unsigned char GetKeyCode() const noexcept { return mKeyCode; }
 	inline bool IsDown() const noexcept { return mType == KeyEventTypes::Down; }
-	inline bool IsPressed() const noexcept { return mType == KeyEventTypes::Press; }
+	inline bool IsPressed() const noexcept { return mType == KeyEventTypes::Pressed; }
 	inline bool IsReleased() const noexcept { return mType == KeyEventTypes::Released; }
 };
 
@@ -40,11 +40,14 @@ public:
 	void ClearBuffer() noexcept;
 
 	// clear keyboard state
-	void Reset() const noexcept;
+	void Reset() noexcept;
 
 	// add new event into buffer
 	void OnKeyEvent(KeyEventArgs args);
 	
 	const KeyEventTypes& GetKeyState(unsigned char key) const;
+	inline bool IsKeyDown(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Down; }
+	inline bool IsKeyPressed(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Pressed; }
+	inline bool IsKeyReleased(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Released; }
 };
 

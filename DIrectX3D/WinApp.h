@@ -4,25 +4,51 @@
 class WinApp
 {
 private:
-	HWND m_hwnd;
-	HINSTANCE m_hInstance;
-	WNDCLASSEX m_wc;
-	int m_nCmdShow;
-	std::wstring m_sTitle;
-	std::wstring m_sClassName;
+	HWND mHWND;
+	WNDCLASSEX mWC;
+	std::wstring mTitle;
+	int mWidth, mHeight, mLeft, mTop;
+	static std::wstring sClassName;
 
 private:
 	static LRESULT CALLBACK SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	WinApp() : m_hwnd(NULL), m_hInstance(NULL), m_wc(), m_nCmdShow(NULL), m_sTitle(L"Desktop Application"), m_sClassName(L"DesktopClass") {}
 	ATOM RegisterWndClassEx();
+protected:
+	LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 public:
-	WinApp(HINSTANCE hInstance, int nCmdShow);
-	~WinApp() {}
+	WinApp() : mHWND(NULL), mWC(),
+		mTitle(L"Desktop Application"),
+		mWidth(CW_USEDEFAULT), mHeight(CW_USEDEFAULT), mLeft(CW_USEDEFAULT), mTop(CW_USEDEFAULT)
+
+	{}
+	WinApp(std::wstring title) noexcept;
+	WinApp(std::wstring title, int width, int height) noexcept;
+	WinApp(std::wstring title, int width, int height, int x, int y) noexcept;
+	WinApp(int width, int height) noexcept;
+	WinApp(int width, int height, int x, int y) noexcept;
+
+	WinApp(const WinApp&) = delete;
+	WinApp& operator=(const WinApp&) = delete;
+	~WinApp() noexcept {}
+
+
+	inline std::wstring GetTitle() const noexcept { return mTitle; }
+	inline int GetWidth() const noexcept { return mWidth; }
+	inline int GetHeight() const noexcept { return mHeight; }
+	RECT GetPosition() const noexcept { return { mLeft, mTop, mWidth - mLeft - 1, mHeight - mTop - 1 }; }
+
+	void SetTitle(std::wstring title) noexcept;
+	void Move(int width, int height, int x, int y);
+	inline void SetPosition(int x, int y) { Move(mWidth, mHeight, x, y); }
+	inline void SetSize(int width, int height) { Move(width, height, mLeft, mTop); }
+
+
 	int InitInstance();
 	int Run();
 	int ExitInstance();
 
 };
 
+extern HINSTANCE g_hInstance;
+extern int g_nCmdShow;

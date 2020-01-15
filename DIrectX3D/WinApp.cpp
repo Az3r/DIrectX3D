@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "WinApp.h"
-#include "Exception.h"
-#include <vector>
+
+std::wstring WinApp::sClassName = L"WndClass";
+
 LRESULT WinApp::SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	WinApp* lpWinApp = nullptr;
@@ -17,43 +18,54 @@ LRESULT WinApp::SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 ATOM WinApp::RegisterWndClassEx()
 {
-	ZeroMemory(&m_wc, sizeof(m_wc));
+	ZeroMemory(&mWC, sizeof(mWC));
 
-	m_wc.cbSize = sizeof(WNDCLASSEX);
-	m_wc.hInstance = m_hInstance;
-	m_wc.lpfnWndProc = WinApp::SetupWndProc;
-	m_wc.lpszClassName = m_sClassName.c_str();
+	mWC.cbSize = sizeof(WNDCLASSEX);
+	mWC.hInstance = g_hInstance;
+	mWC.lpfnWndProc = WinApp::SetupWndProc;
+	mWC.lpszClassName = sClassName.c_str();
 
-	return RegisterClassEx(&m_wc);
+	return RegisterClassEx(&mWC);
 }
 
-
-WinApp::WinApp(HINSTANCE hInstance, int nCmdShow) : WinApp()
+void WinApp::Move(int width, int height, int x, int y)
 {
-	m_hInstance = hInstance;
-	m_nCmdShow = nCmdShow;
+	BOOL result = MoveWindow(mHWND, x, y, width, height, TRUE);
+	assert(result, Exception::TranslateErrorCode(GetLastError()));
+
+	mWidth = width;
+	mHeight = height;
+	mLeft = x;
+	mTop = y;
+}
+
+void WinApp::SetTitle(std::wstring title) noexcept
+{
+	mTitle = title;
+	SetWindowText(mHWND, mTitle.c_str());
 }
 
 int WinApp::InitInstance()
 {
-	Exception::throw_if_false((BOOL)RegisterWndClassEx(), Exception::TranslateErrorCode(GetLastError()), __LINE__, "Window Registeration Failure");
+	Exception::throw_if_false((BOOL)RegisterWndClassEx(), Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Registeration Failure");
 
-	m_hwnd = CreateWindowEx(
+	mHWND = CreateWindowEx(
 		WS_EX_CLIENTEDGE,
-		m_sClassName.c_str(),
-		m_sTitle.c_str(),
+		sClassName.c_str(),
+		mTitle.c_str(),
 		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		mLeft, mTop, mWidth, mHeight,
 		NULL,
 		NULL,
-		m_hInstance,
+		g_hInstance,
 		this
 	);
 
-	Exception::throw_if_false((BOOL)m_hwnd, Exception::TranslateErrorCode(GetLastError()), __LINE__, "Window Creation Failure");
 
-	ShowWindow(m_hwnd, m_nCmdShow);
-	UpdateWindow(m_hwnd);
+	Exception::throw_if_false((BOOL)mHWND, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Creation Failure");
+
+	ShowWindow(mHWND, g_nCmdShow);
+	UpdateWindow(mHWND);
 
 	return 0;
 }
@@ -65,7 +77,7 @@ int WinApp::Run()
 
 	BOOL result;
 
-	while (result = GetMessage(&msg, m_hwnd, NULL, NULL))
+	while (result = GetMessage(&msg, mHWND, NULL, NULL))
 	{
 		if (result < 0)
 		{
@@ -81,8 +93,8 @@ int WinApp::Run()
 
 int WinApp::ExitInstance()
 {
-	BOOL result = UnregisterClass(m_sClassName.c_str(), m_hInstance);
-	//Exception::throw_if_false(result, Exception::TranslateErrorCode(GetLastError()), __LINE__, "Unregisteration Failure");
+	BOOL result = UnregisterClass(sClassName.c_str(), g_hInstance);
+	Exception::throw_if_false(result, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Unregisteration Failure");
 	return 0;
 }
 
@@ -109,14 +121,34 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		EndPaint(hwnd, &painter);
 		return 0;
 	}
-	case WM_KEYDOWN:
-	{
-		static std::string chars;
-		unsigned char key = static_cast<unsigned char>(wParam);
-		chars.push_back(key);
-		SetWindowTextA(m_hwnd, chars.c_str());
-	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
+}
+
+WinApp::WinApp(std::wstring title) noexcept : WinApp()
+{
+	mTitle = title;
+}
+
+WinApp::WinApp(std::wstring title, int width, int height) noexcept : WinApp(title)
+{
+	mWidth = width;
+	mHeight = height;
+}
+
+WinApp::WinApp(std::wstring title, int width, int height, int x, int y) noexcept : WinApp(title, width, height)
+{
+	mLeft = x;
+	mTop = y;
+}
+
+WinApp::WinApp(int width, int height) noexcept : WinApp()
+{
+	mWidth = width;
+	mHeight = height;
+}
+
+WinApp::WinApp(int width, int height, int x, int y) noexcept : WinApp(L"Desktop Application", width, height, x, y)
+{
 }
