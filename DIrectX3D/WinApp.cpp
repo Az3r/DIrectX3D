@@ -156,34 +156,75 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		mKeyboard.Reset();
 		return 0;
 	case WM_LBUTTONUP:
-		mMouse.OnMouseReleased(VK_LBUTTON);
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseReleased(VK_LBUTTON, pos.x, pos.y);
 		return 0;
+	}
 	case WM_RBUTTONUP:
-		mMouse.OnMouseReleased(VK_RBUTTON);
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseReleased(VK_RBUTTON, pos.x, pos.y);
 		return 0;
+	}
 	case WM_MBUTTONUP:
-		mMouse.OnMouseReleased(VK_MBUTTON);
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseReleased(VK_MBUTTON, pos.x, pos.y);
 		return 0;
+	}
 	case WM_XBUTTONUP:
 	{
+		POINTS pos = MAKEPOINTS(lParam);
 		WORD button = GET_XBUTTON_WPARAM(wParam);
-		if (button == XBUTTON1) mMouse.OnMouseReleased(VK_XBUTTON1);
-		else mMouse.OnMouseReleased(VK_XBUTTON2);
+		if (button == XBUTTON1) mMouse.OnMouseReleased(VK_XBUTTON1, pos.x, pos.y);
+		else mMouse.OnMouseReleased(VK_XBUTTON2, pos.x, pos.y);
 		return TRUE;
 	}
 	case WM_LBUTTONDOWN:
 	{
-		static std::wstring chars;
-
-		POINT pt = { GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
-		if (DragDetect(mHWND, pt))
-		{
-			chars.push_back('a');
-			this->SetTitle(chars);
-		}
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseDown(VK_LBUTTON, pos.x, pos.y);
+		return 0;
 	}
-
-
+	case WM_RBUTTONDOWN:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseDown(VK_RBUTTON, pos.x, pos.y);
+		return 0;
+	}
+	case WM_MBUTTONDOWN:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseDown(VK_MBUTTON, pos.x, pos.y);
+		return 0;
+	}
+	case WM_XBUTTONDOWN:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		WORD button = GET_XBUTTON_WPARAM(wParam);
+		if (button == XBUTTON1) mMouse.OnMouseDown(VK_XBUTTON1, pos.x, pos.y);
+		else mMouse.OnMouseDown(VK_XBUTTON2, pos.x, pos.y);
+		return TRUE;
+	}
+	case WM_MOUSEHOVER:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseEnter(pos.x, pos.y);
+		return 0;
+	}
+	case WM_MOUSELEAVE:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseEnter(pos.x, pos.y);
+		return 0;
+	}
+	case WM_MOUSEMOVE:
+	{
+		POINTS pos = MAKEPOINTS(lParam);
+		mMouse.OnMouseMove(pos.x, pos.y);
+		return 0;
+	}
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}

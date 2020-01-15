@@ -13,37 +13,37 @@ void Mouse::OnWheelDown() noexcept
 
 void Mouse::OnCapture() noexcept
 {
-    mCapture = true;
+    mCaptured = true;
     // TODO: optional implementation here
 }
 
 void Mouse::OnReleaseCapture() noexcept
 {
-    mCapture = false;
+    mCaptured = false;
     // TODO: optional implementation here
 }
 
 void Mouse::OnMouseEnter(int x, int y) noexcept
 {
-    mOverWindow = true;
+    mOverClient = true;
     // TODO: optional implementation here
 }
 
 void Mouse::OnMouseLeave(int x, int y) noexcept
 {
-    mOverWindow = false;
+    mOverClient = false;
     // TODO: optional implementation here
 }
 
 void Mouse::OnMouseDown(unsigned char button, int x, int y) 
 {
-    GetMouseState(button) = true;
+    SetMouseState(button, true);
     // TODO: optional implementation here
 }
 
 void Mouse::OnMouseReleased(unsigned char button, int x, int y)
 {
-    GetMouseState(button) = false;
+    SetMouseState(button, false);
     // TODO: optional implementation here
 }
 
@@ -58,8 +58,9 @@ bool Mouse::GetMouseState(unsigned char button) const
     return mButtons.at(button);
 }
 
-bool& Mouse::GetMouseState(unsigned char button)
+void Mouse::SetMouseState(unsigned char button, bool isDown)
 {
     assert(button < 256, "button must be in range of [0,255]");
-    return mButtons.at(button);
+    mButtons.at(button) = isDown;
 }
+

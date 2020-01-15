@@ -11,7 +11,7 @@ private:
     std::vector<bool> mButtons;
 
     // whether the mouse is over window's client or not
-    bool mOverWindow;
+    bool mOverClient;
 
     // whether the mouse is being captured or not
     bool mCaptured;
@@ -19,7 +19,7 @@ private:
     POINTS mPosition;
 
 public:
-    Mouse() noexcept : mButtons(256), mPosition({ 0,0 }), mCaptured(false), mOverWindow(false) {}
+    Mouse() noexcept : mButtons(256), mPosition({ 0,0 }), mCaptured(false), mOverClient(false) {}
 
     void OnWheelUp() noexcept;
     void OnWheelDown() noexcept;
@@ -36,7 +36,7 @@ public:
     void OnMouseMove(int x, int y) noexcept;
 
     bool GetMouseState(unsigned char button) const;
-    bool& GetMouseState(unsigned char button);
+    void SetMouseState(unsigned char button, bool isDown);
 
     inline bool IsLeftMouseDown() const noexcept { return GetMouseState(VK_LBUTTON); }
     inline bool IsLeftMouseReleased() const noexcept { return !GetMouseState(VK_LBUTTON); }
@@ -53,7 +53,7 @@ public:
     inline bool IsX2MouseDown() const noexcept { return GetMouseState(VK_XBUTTON2); }
     inline bool IsX2MouseReleased() const noexcept { return !GetMouseState(VK_XBUTTON2); }
 
-    inline bool IsOverClient() const noexcept { return mOverWindow; }
+    inline bool IsOverClient() const noexcept { return mOverClient; }
     inline bool IsCaptured() const noexcept { return mCaptured; }
     inline const POINTS& GetPosition() const noexcept { return mPosition; }
 };
