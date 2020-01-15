@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Keyboard.h"
 
+
 int Keyboard::ReadKeys() noexcept
 {
     if (mEventBuffer.empty()) return 0;
@@ -11,8 +12,9 @@ int Keyboard::ReadKeys() noexcept
     int nEvents = 0;
     while (!mEventBuffer.empty())
     {
-        const KeyEventArgs& args = mEventBuffer.front();
-        mKeys.at(args.GetKeyCode()) = args.GetType();
+        unsigned char key = mEventBuffer.front().GetKeyCode();
+        const KeyState& state = mEventBuffer.front().GetState();
+        this->GetState(key) = state;
         mEventBuffer.pop();
         ++nEvents;
     }
@@ -28,7 +30,7 @@ void Keyboard::Reset() noexcept
 {
     for (size_t i = 0; i < mKeys.size(); i++)
     {
-        mKeys.at(i) = KeyEventTypes::None;
+        mKeys.at(i) = KeyState();
     }
 }
 
@@ -37,7 +39,13 @@ void Keyboard::OnKeyEvent(KeyEventArgs args)
     mEventBuffer.push(args);
 }
 
-const KeyEventTypes& Keyboard::GetKeyState(unsigned char key) const
+const KeyState& Keyboard::GetState(unsigned char key) const
+{
+    assert(key < 256, "key must be in range of [0, 255]");
+    return mKeys.at(key);
+}
+
+KeyState& Keyboard::GetState(unsigned char key)
 {
     assert(key < 256, "key must be in range of [0, 255]");
     return mKeys.at(key);

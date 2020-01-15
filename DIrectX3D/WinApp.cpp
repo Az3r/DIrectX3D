@@ -124,23 +124,25 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 	{
 		unsigned char key = static_cast<unsigned char>(wParam);
+		KeyState state(std::bitset<3>("100"));
+
 		// check whether this key is previously down or up
-		bool prevDown = lParam & 0x40000000;
-		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Down, key));
-		if (!prevDown) mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Pressed, static_cast<unsigned char>(wParam)));
+		if (lParam & 0x40000000) state.SetDownAndPressed();
+		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
 	}
 	case WM_SYSKEYDOWN:
 	{
 		unsigned char key = static_cast<unsigned char>(wParam);
+		KeyState state(std::bitset<3>("100"));
+
 		// check whether this key is previously down or up
-		bool prevDown = lParam & 0x40000000;
-		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Down, key));
-		if (!prevDown) mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Pressed, static_cast<unsigned char>(wParam)));
+		if (lParam & 0x40000000) state.SetDownAndPressed();
+		mKeyboard.OnKeyEvent(KeyEventArgs(state, key));
 	}
 	case WM_KEYUP:
-		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Released, static_cast<unsigned char>(wParam)));
+		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
 	case WM_SYSKEYUP:
-		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Released, static_cast<unsigned char>(wParam)));
+		mKeyboard.OnKeyEvent(KeyEventArgs(std::bitset<3>("001"), static_cast<unsigned char>(wParam)));
 	case WM_KILLFOCUS:
 		mKeyboard.Reset();
 	default:

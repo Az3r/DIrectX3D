@@ -1,33 +1,50 @@
 #pragma once
 #include <vector>
 #include <queue>
+#include <bitset>
 
-enum class KeyEventTypes : unsigned char { None = 0, Pressed = 1, Down = 2, Released = 4};
+// forward declaration
+class Keyboard;
+class KeyState;
+
 
 class KeyEventArgs
 {
+	friend Keyboard;
 private:
-	KeyEventTypes mType;
+	KeyState mState;
 	unsigned char mKeyCode;
 
 public:
-	KeyEventArgs(KeyEventTypes type, unsigned char key) noexcept : mType(type), mKeyCode(key) {}
-	KeyEventArgs() noexcept : mType(KeyEventTypes::None), mKeyCode(0u) {}
-	~KeyEventArgs() noexcept {}
+	KeyEventArgs(KeyState state, unsigned char key) noexcept : mState(state), mKeyCode(key) {}
+	KeyEventArgs() noexcept : mState(), mKeyCode(0u) {}
 
-	inline KeyEventTypes GetType() const noexcept { return mType; }
+	inline const KeyState& GetState() const noexcept { return mState; }
 	inline unsigned char GetKeyCode() const noexcept { return mKeyCode; }
-	inline bool IsDown() const noexcept { return mType == KeyEventTypes::Down; }
-	inline bool IsPressed() const noexcept { return mType == KeyEventTypes::Pressed; }
-	inline bool IsReleased() const noexcept { return mType == KeyEventTypes::Released; }
 };
 
+class KeyState
+{
+private:
+	std::bitset<3> mStates;
+public:
+	KeyState(std::bitset<3> states) noexcept : mStates(states) {}
+	KeyState() noexcept : mStates("000") {}
 
+	inline bool IsDown() const noexcept { return mStates.test(0); }
+	inline bool IsPressed() const noexcept { return mStates.test(1); }
+	inline bool IsReleased() const noexcept { return mStates.test(2); }
+
+	inline void SetDown() noexcept { mStates = std::bitset<3>("100"); }
+	inline void SetPressed() noexcept { mStates = std::bitset<3>("010"); }
+	inline void SetDownAndPressed()  noexcept { mStates = std::bitset<3>("110"); }
+	inline void SetReleased() noexcept { mStates = std::bitset<3>("001"); }
+};
 
 class Keyboard
 {
 private:
-	std::vector<KeyEventTypes> mKeys;
+	std::vector<KeyState> mKeys;
 	std::queue<KeyEventArgs> mEventBuffer;
 
 public:
@@ -45,9 +62,10 @@ public:
 	// add new event into buffer
 	void OnKeyEvent(KeyEventArgs args);
 	
-	const KeyEventTypes& GetKeyState(unsigned char key) const;
-	inline bool IsKeyDown(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Down; }
-	inline bool IsKeyPressed(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Pressed; }
-	inline bool IsKeyReleased(unsigned char key) const { return this->GetKeyState(key) == KeyEventTypes::Released; }
+	const KeyState& GetState(unsigned char key) const;
+	KeyState& GetState(unsigned char key);
+	inline bool IsKeyDown(unsigned char key) const { return this->GetState(key).IsDown(); }
+	inline bool IsKeyPressed(unsigned char key) const { return this->GetState(key).IsPressed(); }
+	inline bool IsKeyReleased(unsigned char key) const { return this->GetState(key).IsReleased(); }
 };
 
