@@ -1,4 +1,5 @@
 #pragma once
+#include "Keyboard.h"
 #include <Windows.h>
 #include <string>
 class WinApp
@@ -10,6 +11,7 @@ private:
 	int mWidth, mHeight, mLeft, mTop;
 	static std::wstring sClassName;
 
+	Keyboard mKeyboard;
 private:
 	static LRESULT CALLBACK SetupWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	ATOM RegisterWndClassEx();

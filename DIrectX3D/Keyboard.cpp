@@ -21,7 +21,7 @@ int Keyboard::ReadKeys() noexcept
 
 inline void Keyboard::ClearBuffer() noexcept
 {
-    while (!mEventBuffer.empty()) mEventBuffer.pop();
+    mEventBuffer = std::queue<KeyEventArgs>();
 }
 
 void Keyboard::Reset() noexcept

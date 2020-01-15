@@ -2,7 +2,7 @@
 #include <vector>
 #include <queue>
 
-enum class KeyEventTypes { Pressed, Down, Released, None };
+enum class KeyEventTypes : unsigned char { None = 0, Pressed = 1, Down = 2, Released = 4};
 
 class KeyEventArgs
 {

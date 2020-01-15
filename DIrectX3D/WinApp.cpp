@@ -121,6 +121,28 @@ LRESULT WinApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		EndPaint(hwnd, &painter);
 		return 0;
 	}
+	case WM_KEYDOWN:
+	{
+		unsigned char key = static_cast<unsigned char>(wParam);
+		// check whether this key is previously down or up
+		bool prevDown = lParam & 0x40000000;
+		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Down, key));
+		if (!prevDown) mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Pressed, static_cast<unsigned char>(wParam)));
+	}
+	case WM_SYSKEYDOWN:
+	{
+		unsigned char key = static_cast<unsigned char>(wParam);
+		// check whether this key is previously down or up
+		bool prevDown = lParam & 0x40000000;
+		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Down, key));
+		if (!prevDown) mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Pressed, static_cast<unsigned char>(wParam)));
+	}
+	case WM_KEYUP:
+		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Released, static_cast<unsigned char>(wParam)));
+	case WM_SYSKEYUP:
+		mKeyboard.OnKeyEvent(KeyEventArgs(KeyEventTypes::Released, static_cast<unsigned char>(wParam)));
+	case WM_KILLFOCUS:
+		mKeyboard.Reset();
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
