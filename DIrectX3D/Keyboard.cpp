@@ -2,23 +2,14 @@
 #include "Keyboard.h"
 
 
-int Keyboard::ReadKeys() noexcept
+void Keyboard::Read() noexcept
 {
-    if (mEventBuffer.empty()) return 0;
+    if (mEventBuffer.empty()) return;
 
-    // reset keys' state
-    this->Reset();
-
-    int nEvents = 0;
-    while (!mEventBuffer.empty())
-    {
-        unsigned char key = mEventBuffer.front().GetKeyCode();
-        const KeyState& state = mEventBuffer.front().GetState();
-        this->GetState(key) = state;
-        mEventBuffer.pop();
-        ++nEvents;
-    }
-    return nEvents;
+    unsigned char key = mEventBuffer.front().GetKeyCode();
+    const KeyState& state = mEventBuffer.front().GetState();
+    this->GetState(key) = state;
+    mEventBuffer.pop();
 }
 
 inline void Keyboard::ClearBuffer() noexcept
