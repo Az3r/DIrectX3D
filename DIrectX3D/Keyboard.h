@@ -31,8 +31,6 @@ public:
 	// clear keyboard state
 	void Reset() noexcept;
 
-	// add new event into buffer
-	void OnKeyEvent(KeyEventArgs args);
 	void OnKeyDown(unsigned char key);
 	void OnKeyPressed(unsigned char key);
 	void OnKeyReleased(unsigned char key);

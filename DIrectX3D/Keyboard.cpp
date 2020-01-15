@@ -1,22 +1,12 @@
 #include "pch.h"
 #include "Keyboard.h"
 
-inline void Keyboard::ClearBuffer() noexcept
-{
-    mEventBuffer = std::queue<KeyEventArgs>();
-}
-
 void Keyboard::Reset() noexcept
 {
     for (size_t i = 0; i < mKeys.size(); i++)
     {
         mKeys.at(i) = KeyState();
     }
-}
-
-void Keyboard::OnKeyEvent(KeyEventArgs args)
-{
-    mEventBuffer.push(args);
 }
 
 void Keyboard::OnKeyDown(unsigned char key)

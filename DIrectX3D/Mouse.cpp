@@ -49,7 +49,7 @@ void Mouse::OnMouseReleased(unsigned char button, int x, int y)
 
 void Mouse::OnMouseMove(int x, int y) noexcept
 {
-    mPosition = { x,y };
+    mPosition = { (SHORT)x,(SHORT)y };
 }
 
 bool Mouse::GetMouseState(unsigned char button) const

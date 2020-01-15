@@ -48,7 +48,6 @@ public:
 	inline void SetPosition(int x, int y) { Move(mWidth, mHeight, x, y); }
 	inline void SetSize(int width, int height) { Move(width, height, mLeft, mTop); }
 
-
 	int InitInstance();
 	int Run();
 	int ExitInstance();

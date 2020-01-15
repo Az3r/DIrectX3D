@@ -88,10 +88,8 @@ int WinApp::Run()
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);
 
-
-		mKeyboard.Read();
-		if (mKeyboard.IsKeyPressed(VK_MENU)) MessageBox(NULL, L"A is released", NULL, NULL);
-
+		//if (mKeyboard.IsKeyDown(VK_MENU)) this->SetTitle(this->GetTitle() + L'a');
+		if (mMouse.IsLeftMouseDown()) this->SetTitle(this->GetTitle() + L'a');
 	}
 
 	return 0;
