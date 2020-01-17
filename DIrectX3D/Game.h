@@ -4,8 +4,8 @@ class Game :
     public WinApp
 {
 protected:
-    int Update() noexcept;
+    virtual int Update() noexcept;
 public:
-    int Run() override;
+    virtual int Run() override;
 };
 
