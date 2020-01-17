@@ -10,7 +10,7 @@ public:
     Timer() noexcept : mCounter(std::chrono::steady_clock::now()) {}
     // returns the different between counter and current time, counter is updated to current time
     float Update() noexcept;
-    // returns the different between counter and current time, counter is not updated
+    // returns the different between counter and current time, counter is NOT updated
     float Elapsed() const noexcept;
 };
 
