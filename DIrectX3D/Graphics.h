@@ -1,27 +1,28 @@
 #pragma once
 
 #include <d3d11.h>
-
+#include <wrl.h>
 class Graphics
 {
 private:
-    ID3D11Device* m_pDevice = nullptr;
-    IDXGISwapChain* m_pSwapChain = nullptr;
-    ID3D11DeviceContext* m_pContext = nullptr;
+    typedef Microsoft::WRL::ComPtr<ID3D11Device> PDevice;
+    typedef Microsoft::WRL::ComPtr<IDXGISwapChain> PSwapChain;
+    typedef Microsoft::WRL::ComPtr<ID3D11DeviceContext> PDeviceContext;
 
-    // this must be set before calling to Initialize()
-    HWND mHWND = NULL;
+    PDevice m_pDevice = nullptr;
+    PSwapChain m_pSwapChain = nullptr;
+    PDeviceContext m_pContext = nullptr;
+
+    HWND mHWND = nullptr;
 public:
-    Graphics() = default;
+    Graphics(HWND hwnd) noexcept : mHWND(hwnd) {}
     Graphics(const Graphics&) = delete;
     Graphics& operator=(const Graphics&) = delete;
-    ~Graphics();
+    ~Graphics() {}
 
-    inline void SetHWND(HWND hwnd) noexcept { mHWND = hwnd; }
     inline const HWND& GetHWND() const noexcept { return mHWND; }
      
-    // call Initialize() before using any below functions
+    // must be called before any other functions
     HRESULT Initialize();
-
 };
 
