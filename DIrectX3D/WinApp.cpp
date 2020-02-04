@@ -50,15 +50,15 @@ int WinApp::Start()
 	}
 	catch (const Exception & e)
 	{
-		MessageBoxA(NULL, e.what(), e.name().c_str(), MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, e.what(), e.name().c_str(), MB_ICONERROR);
 	}
 	catch (const std::exception& ex)
 	{
-		MessageBoxA(NULL, ex.what(),"Standard Exception", MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, ex.what(),"Standard Exception", MB_ICONERROR);
 	}
 	catch (...)
 	{
-		MessageBoxA(NULL, "Unknown Exception", "Unknown Exception", MB_ICONEXCLAMATION);
+		MessageBoxA(NULL, "Unknown Exception", "Unknown Exception", MB_ICONERROR);
 	}
 
 	return 0;

@@ -12,7 +12,7 @@ int Game::InitInstance()
 {
 	WinApp::InitInstance();
 	mGfx = std::make_unique<Graphics>(this->GetHWND());
-	THROW_IF_FALED(mGfx->Initialize());
+	DIRECTX_THROW_IF_FAILED(mGfx->Initialize());
     return 0;
 }
 

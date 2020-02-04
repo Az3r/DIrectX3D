@@ -5,7 +5,7 @@ HRESULT Graphics::Initialize() noexcept
 {
     DXGI_SWAP_CHAIN_DESC sd = {};
 
-    sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8X8_UNORM;
     sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
     sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
     sd.SampleDesc.Count = 1;

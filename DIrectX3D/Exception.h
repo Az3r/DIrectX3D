@@ -1,6 +1,7 @@
 #pragma once
 #include <exception>
 #include <string>
+#include <wtypes.h>
 
 class Exception : public std::exception
 {
