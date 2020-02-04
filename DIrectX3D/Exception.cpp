@@ -43,7 +43,7 @@ std::string Exception::TranslateErrorCode(DWORD errorCode) noexcept
 	// get language id
 	DWORD value;
 	int langResult = GetLocaleInfoEx(L"en-us", LOCALE_ILANGUAGE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPWSTR>(&value), sizeof(DWORD) / sizeof(wchar_t));
-	LANGID langId = value;
+	LANGID langId = static_cast<LANGID>(value);
 
 	// get message corresponding its error code
 	LPSTR pBuffer = nullptr;

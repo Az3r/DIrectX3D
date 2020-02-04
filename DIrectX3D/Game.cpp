@@ -4,8 +4,16 @@
 int Game::Update() noexcept
 {
 	//if (mKeyboard.IsKeyDown(VK_MENU)) this->SetTitle(this->GetTitle() + L'a');
-	if (mMouse.IsLeftMouseDown()) this->SetTitle(this->GetTitle() + L'a');
+	mGfx->Draw();
 	return 0;
+}
+
+int Game::InitInstance()
+{
+	WinApp::InitInstance();
+	mGfx = std::make_unique<Graphics>(this->GetHWND());
+	try_throw(mGfx->Initialize());
+    return 0;
 }
 
 int Game::Run()
@@ -21,8 +29,8 @@ int Game::Run()
 			TranslateMessage(&msg);
 			DispatchMessageW(&msg);
 
-			Update();
 		}
+		Update();
 	}
 
 

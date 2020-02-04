@@ -3,3 +3,4 @@
 #include <string>
 #include <chrono>
 #include "Exception.h"
+#include <memory>

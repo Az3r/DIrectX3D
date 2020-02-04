@@ -90,8 +90,6 @@ int WinApp::InitInstance()
 	Exception::throw_if_false((BOOL)mHWND, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Creation Failure");
 
 	ShowWindow(mHWND, g_nCmdShow);
-	UpdateWindow(mHWND);
-
 	return 0;
 }
 
