@@ -65,12 +65,12 @@ std::string Exception::TranslateErrorCode(DWORD errorCode) noexcept
 	return msg;
 }
 
-void Exception::throw_if_false(HRESULT hr, std::string msg, int line, const char* file, std::string name)
+void Exception::Assert(HRESULT hr, std::string msg, int line, const char* file, std::string name)
 {
 	if (FAILED(hr)) throw Exception(msg, line, file, name);
 }
 
-void Exception::throw_if_false(BOOL hr, std::string msg, int line, const char* file, std::string name)
+void Exception::Assert(BOOL hr, std::string msg, int line, const char* file, std::string name)
 {
 	if (!hr) throw Exception(msg, line, file, name);
 }

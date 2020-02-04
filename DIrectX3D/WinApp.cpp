@@ -32,7 +32,7 @@ ATOM WinApp::RegisterWndClassEx()
 void WinApp::Move(int width, int height, int x, int y)
 {
 	BOOL result = MoveWindow(mHWND, x, y, width, height, TRUE);
-	assert(result, Exception::TranslateErrorCode(GetLastError()));
+	ASSERT(result, Exception::TranslateErrorCode(GetLastError()));
 
 	mWidth = width;
 	mHeight = height;
@@ -72,7 +72,7 @@ void WinApp::SetTitle(std::wstring title) noexcept
 
 int WinApp::InitInstance()
 {
-	Exception::throw_if_false((BOOL)RegisterWndClassEx(), Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Registeration Failure");
+	Exception::Assert((BOOL)RegisterWndClassEx(), Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Registeration Failure");
 
 	mHWND = CreateWindowEx(
 		WS_EX_CLIENTEDGE,
@@ -86,10 +86,9 @@ int WinApp::InitInstance()
 		this
 	);
 
-
-	Exception::throw_if_false((BOOL)mHWND, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Window Creation Failure");
-
+	ASSERT(mHWND != NULL, Exception::TranslateErrorCode(GetLastError()));
 	ShowWindow(mHWND, g_nCmdShow);
+
 	return 0;
 }
 
@@ -110,13 +109,13 @@ int WinApp::Run()
 	}
 
 	if (result < 0) return -1;
-	else return msg.wParam;
+	else return static_cast<int>(msg.wParam);
 }
 
 int WinApp::ExitInstance()
 {
 	BOOL result = UnregisterClass(sClassName.c_str(), g_hInstance);
-	Exception::throw_if_false(result, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Unregisteration Failure");
+	Exception::Assert(result, Exception::TranslateErrorCode(GetLastError()), __LINE__, __FILE__, "Unregisteration Failure");
 	return 0;
 }
 

@@ -12,7 +12,7 @@ int Game::InitInstance()
 {
 	WinApp::InitInstance();
 	mGfx = std::make_unique<Graphics>(this->GetHWND());
-	try_throw(mGfx->Initialize());
+	THROW_IF_FALED(mGfx->Initialize());
     return 0;
 }
 
@@ -24,7 +24,7 @@ int Game::Run()
 	{
 		while (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
 		{
-			if (msg.message == WM_QUIT) return msg.wParam;
+			if (msg.message == WM_QUIT) return static_cast<int>(msg.wParam);
 
 			TranslateMessage(&msg);
 			DispatchMessageW(&msg);

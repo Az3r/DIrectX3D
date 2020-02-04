@@ -26,12 +26,12 @@ void Keyboard::OnKeyReleased(unsigned char key)
 
 const KeyState& Keyboard::GetState(unsigned char key) const
 {
-    assert(key < 256, "key must be in range of [0, 255]");
+    ASSERT(key < 256, "key must be in range of [0, 255]");
     return mKeys.at(key);
 }
 
 KeyState& Keyboard::GetState(unsigned char key)
 {
-    assert(key < 256, "key must be in range of [0, 255]");
+    ASSERT(key < 256, "key must be in range of [0, 255]");
     return mKeys.at(key);
 }

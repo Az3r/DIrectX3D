@@ -54,13 +54,13 @@ void Mouse::OnMouseMove(int x, int y) noexcept
 
 bool Mouse::GetMouseState(unsigned char button) const
 {
-    assert(button < 256, "button must be in range of [0,255]");
+    ASSERT(button < 256, "button must be in range of [0,255]");
     return mButtons.at(button);
 }
 
 void Mouse::SetMouseState(unsigned char button, bool isDown)
 {
-    assert(button < 256, "button must be in range of [0,255]");
+    ASSERT(button < 256, "button must be in range of [0,255]");
     mButtons.at(button) = isDown;
 }
 
